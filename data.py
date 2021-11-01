@@ -11,11 +11,11 @@ def get_data_list():
         return result
 
 
-def tokenize_data():
+def tokenize_data(quotes):
+    print("tokenizing data...")
     # TODO would it make sense to remove some words (+punctuation?)
     # TODO lemmatize + delemmatize possible??
     result = []
-    quotes = get_data_list()[:2]
     for quote in quotes:
         sentences = nltk.sent_tokenize(quote)
         words = []
@@ -25,9 +25,10 @@ def tokenize_data():
     return result
 
 
-def get_n_grams(n = 2):
+def get_n_grams(tokenized, n = 5):
+    print("generating n-grams...")
+
     result = []
-    tokenized = tokenize_data()
     for quote in tokenized:
         quote_n_grams = []
         for i in range(0, len(quote) - (n-1)):
@@ -36,8 +37,9 @@ def get_n_grams(n = 2):
         result.append(quote_n_grams)
     return result
 
-def make_pairs():
-    data_list = get_n_grams()
+def make_pairs(data_list):
+    print("generating input-target pairs...")
+
     result = []
     for sentence in data_list:
         for i in range(0,len(sentence)):
@@ -46,8 +48,10 @@ def make_pairs():
     return result
 
 # map each distinct word in the dataset to an integer value
-def get_word_maps():
-    sentences = itertools.chain.from_iterable(tokenize_data())
+def get_word_maps(tokenized_data):
+    print("generating word maps...")
+
+    sentences = itertools.chain.from_iterable(tokenized_data)
     whole_text = " ".join(sentences).split()
     words = set(whole_text)
     
@@ -60,9 +64,9 @@ def get_word_maps():
     return int_to_word, word_to_int, len(int_to_word) # return vocab length as well
 
 # turn data to integers
-def get_data_as_np_array():
-    _, word_to_int, vocab_len = get_word_maps()
-    data = make_pairs()
+def get_data(word_to_int, data):
+    print("generating data to integer arrays...")
+
     result = []
     for pair in data:
         pair_as_int = []
@@ -72,4 +76,13 @@ def get_data_as_np_array():
                 item_as_int.append(word_to_int[word])
             pair_as_int.append(np.array(item_as_int))
         result.append(tuple(pair_as_int))
-    return result, vocab_len
+    return result
+
+def get():
+    data_list = get_data_list()
+    tokenized = tokenize_data(data_list)
+    n_grams = get_n_grams(tokenized, n=10)
+    pairs = make_pairs(n_grams)
+    int_to_word, word_to_int, vocab_len = get_word_maps(tokenized)
+    result = get_data(word_to_int, pairs)
+    return result, vocab_len, word_to_int, int_to_word, tokenized

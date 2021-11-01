@@ -1,26 +1,23 @@
-# TODO create training loop
-import data
 import model
+
 import torch
 from torch.utils.data import DataLoader
 
 device = torch.device('cuda:0')
 
 # training hyperparameters
-batch_size = 16
+batch_size = 64
 learning_rate = 0.01
 epochs = 3
 
 # TODO split training and testing data (+evaluation)
 
-def get_batches():
-    numpy_data, vocab_len = data.get_data_as_np_array()
+def get_batches(input_data):
     # use DataLoader to get batches 
-    train_data_loader = DataLoader(numpy_data, shuffle=True, batch_size=batch_size)
-    return train_data_loader, vocab_len
+    return DataLoader(input_data, shuffle=True, batch_size=batch_size)
 
-def train():
-    batches, vocab_len = get_batches()
+def train(input_data, vocab_len):
+    batches = get_batches(input_data)
     lstm = model.LSTMModel(vocab_len).to(device)
     optimizer = torch.optim.Adam(lstm.parameters(), lr = learning_rate) 
     loss_fn = torch.nn.CrossEntropyLoss()
@@ -29,11 +26,9 @@ def train():
     for e in range(0, epochs):
         total_loss = 0
         for i, (inputs, targets) in enumerate(batches):
-            inputs, targets = inputs.to(device), targets.to(device)# send tensors to device
+            inputs, targets = inputs.to(device), targets.to(device) # send tensors to device
             outputs = lstm(inputs)
 
-            #print(outputs.permute(0, 2, 1))
-            #print(targets)
             # TODO why do i need to permute this?
             loss = loss_fn(outputs.permute(0, 2, 1), targets) # calculate loss
             total_loss += loss.item()
@@ -43,5 +38,4 @@ def train():
             optimizer.step() # update parameters
             optimizer.zero_grad() # reset gradients
         print()
-
-train()
+    torch.save(lstm, "model.pt")

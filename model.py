@@ -5,7 +5,7 @@ class LSTMModel(nn.Module):
     def __init__(self, vocab_len, emb_dim = 200, hidden_dim = 256):
         super(LSTMModel, self).__init__()
 
-        self.emb = nn.Embedding(emb_dim, 200)
+        self.emb = nn.Embedding(vocab_len, emb_dim)
         self.lstm = nn.LSTM(emb_dim, hidden_dim, batch_first=True)
         # TODO could add dropout layer?
         # TODO try bidirectional LSTM?
