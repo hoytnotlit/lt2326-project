@@ -57,12 +57,11 @@ def get_word_maps():
         word_to_int[word] = i
     
     int_to_word = list(words)
-
-    return int_to_word, word_to_int
+    return int_to_word, word_to_int, len(int_to_word) # return vocab length as well
 
 # turn data to integers
 def get_data_as_np_array():
-    _, word_to_int = get_word_maps()
+    _, word_to_int, vocab_len = get_word_maps()
     data = make_pairs()
     result = []
     for pair in data:
@@ -71,6 +70,6 @@ def get_data_as_np_array():
             item_as_int = []
             for word in n_gram:
                 item_as_int.append(word_to_int[word])
-            pair_as_int.append(item_as_int)
-        result.append(pair_as_int)
-    return np.array(result)
+            pair_as_int.append(np.array(item_as_int))
+        result.append(tuple(pair_as_int))
+    return result, vocab_len
