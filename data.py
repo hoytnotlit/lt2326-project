@@ -5,7 +5,7 @@ import itertools
 import numpy as np
 
 def get_data_list():
-    with open("quotes_dataset.csv") as file:
+    with open("/scratch/gussuvmi/lt2326-project/quotes_dataset.csv") as file:
         reader = csv.reader(file, delimiter=',')
         result = [line[0].lower() for line in reader] # lower case everything
         return result
@@ -13,8 +13,6 @@ def get_data_list():
 
 def tokenize_data(quotes):
     print("tokenizing data...")
-    # TODO would it make sense to remove some words (+punctuation?)
-    # TODO lemmatize + delemmatize possible??
     result = []
     for quote in quotes:
         sentences = nltk.sent_tokenize(quote)

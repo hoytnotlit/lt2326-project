@@ -26,7 +26,7 @@ def generate_random_seed(word_to_int, quotes):
     # get seed from first couple of words in a random sentence
     quote = random.choice(quotes)
     print("original quote:", " ".join(quote))
-    seed_length = random.randrange(1, 5) # TODO this might break if sentence lenght is less than 10
+    seed_length = random.randrange(1, 5) 
     seed = quote[0:seed_length]
     seed_as_int = [word_to_int[word] for word in seed]
     actual_as_int = [word_to_int[word] for word in quote]
@@ -36,14 +36,6 @@ def get_cosine_similarity(generated, actual, seed_len):
     # remove seed - it distorts the similarity
     generated = generated[seed_len:]
     actual = actual[seed_len:]
-    
-    # add padding if vectors lengths don't match
-    # if len(generated) < len(actual):
-    #     difference = len(actual) - len(generated)
-    #     generated = generated + ([0] * difference)
-    # if len(actual) < len(generated):
-    #     difference = len(generated) - len(actual)
-    #     actual = actual + ([0] * difference)
 
     # truncate vectors if their lengths do not match
     if len(generated) < len(actual):
