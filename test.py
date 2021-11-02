@@ -13,7 +13,7 @@ def generate_quote(model, seed, int_to_word, device):
         model_input = torch.tensor(seed).unsqueeze(0).to(device)
         with torch.no_grad():
             output = model(model_input)
-        output = F.softmax(output, dim=1) # get word probabilities
+        output = F.softmax(output, dim=2) # get word probabilities
         output = output.squeeze(0)[-1] # we only need the last word
         top_predictions = output.argsort()[-5:] # select top 5 values
         selected_prediction = int(random.choice(top_predictions)) # select one of the top predictions

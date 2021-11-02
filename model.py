@@ -8,7 +8,6 @@ class LSTMModel(nn.Module):
         self.emb = nn.Embedding(vocab_len, emb_dim)
         self.lstm = nn.LSTM(emb_dim, hidden_dim, num_layers=num_layers, dropout=drop_prob, batch_first=True)
         self.dropout = nn.Dropout(drop_prob)
-        # TODO try bidirectional LSTM?
         self.linear = nn.Linear(hidden_dim, vocab_len)      
     
     def forward(self, input_data):

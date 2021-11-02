@@ -27,7 +27,7 @@ def train(input_data, vocab_len, device):
             inputs, targets = inputs.to(device), targets.to(device) # send tensors to device
             outputs = lstm(inputs)
 
-            outputs = F.softmax(outputs, dim=1) # TODO why in tutorials softmax not there?
+            outputs = F.softmax(outputs, dim=2)
             loss = loss_fn(outputs.permute(0, 2, 1), targets) # calculate loss
             total_loss += loss.item()
             print(f'{total_loss/(i+1)} batch n.{batch_n}', end='\r') # print average loss for the epoch

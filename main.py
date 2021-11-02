@@ -15,7 +15,8 @@ if __name__ == "__main__":
 
     device = torch.device(args.device)
     retrain = args.retrain
-    n_quotes = args.n_quotes
+    n_quotes = int(args.n_quotes)
+
     # get data for training, vocab lenght for model parameter 
     # and word-int-word maps & all tokenized sentences for text generation
     input_data, vocab_len, word_to_int, int_to_word, tokenized = data.get()
