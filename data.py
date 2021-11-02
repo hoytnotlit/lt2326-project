@@ -80,7 +80,7 @@ def get_data(word_to_int, data):
 
 def get():
     data_list = get_data_list()
-    data_list = data_list[:10000] # truncating data because the whole set is too much for CUDA
+    data_list = data_list[:50000] # truncating data because the whole set is too much for CUDA
     tokenized = tokenize_data(data_list)
     n_grams = get_n_grams(tokenized, n=10)
     pairs = make_pairs(n_grams)

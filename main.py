@@ -20,10 +20,10 @@ if __name__ == "__main__":
     # and word-int-word maps & all tokenized sentences for text generation
     input_data, vocab_len, word_to_int, int_to_word, tokenized = data.get()
     # train model
-    if (exists("model.pt") == False or retrain == True):
+    if (exists("/scratch/gussuvmi/lt2326-project/model.pt") == False or retrain == True):
         train.train(input_data, vocab_len, device)
     # load trained model
-    model = torch.load("model.pt").to(device)
+    model = torch.load("/scratch/gussuvmi/lt2326-project/model.pt").to(device)
     # generate quotes
     for i in range(0, n_quotes):
         seed, actual = test.generate_random_seed(word_to_int, tokenized)

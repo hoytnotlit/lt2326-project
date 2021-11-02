@@ -37,4 +37,4 @@ def train(input_data, vocab_len, device):
             optimizer.step() # update parameters
             optimizer.zero_grad() # reset gradients
         print()
-    torch.save(lstm, "model.pt")
+    torch.save(lstm, "/scratch/gussuvmi/lt2326-project/model.pt")
