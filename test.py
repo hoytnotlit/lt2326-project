@@ -7,7 +7,7 @@ from numpy import dot
 from numpy.linalg import norm
 
 def generate_quote(model, seed, int_to_word, device):
-    sentence_len = 20
+    sentence_len = random.randrange(10, 20)
     generated = [int_to_word[i] for i in seed]
     while len(generated) < sentence_len:
         model_input = torch.tensor(seed).unsqueeze(0).to(device)
@@ -22,13 +22,14 @@ def generate_quote(model, seed, int_to_word, device):
         seed.append(selected_prediction)
     return " ".join(generated), seed
 
-def generate_random_seed(word_to_int, sentences):
+def generate_random_seed(word_to_int, quotes):
     # get seed from first couple of words in a random sentence
-    sentence = random.choice(sentences)
-    seed_length = random.randrange(2, 10) # TODO this might break if sentence lenght is less than 10
-    seed = sentence[0:seed_length]
+    quote = random.choice(quotes)
+    print("original quote:", " ".join(quote))
+    seed_length = random.randrange(1, 5) # TODO this might break if sentence lenght is less than 10
+    seed = quote[0:seed_length]
     seed_as_int = [word_to_int[word] for word in seed]
-    actual_as_int = [word_to_int[word] for word in sentence]
+    actual_as_int = [word_to_int[word] for word in quote]
     return seed_as_int, actual_as_int
 
 def get_cosine_similarity(generated, actual, seed_len):
